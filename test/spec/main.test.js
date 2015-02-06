@@ -1,5 +1,9 @@
 /* jshint mocha: true, expr: true, strict: false, undef: false */
 
+beforeEach(function(){
+  $('tbody').empty();
+});
+
 describe('test suite', function () {
   it('should assert true', function () {
     true.should.be.true;
@@ -13,8 +17,30 @@ describe('hello', function () {
   });
 });
 
+describe('totalStocks', function () {
+  it('should return a sum of the LastPrices', function () {
+    var stocks1 = [
+                  { Symbol: 'AAPL', LastPrice: 12.45 },
+                  { Symbol: 'MSFT', LastPrice: 23.56 }
+                 ],
+    stocks2 = [
+                  { Symbol: 'BANANA', LastPrice: 0.1 },
+                  { Symbol: 'XBUCKS', LastPrice: 0.2 }
+                 ];
+
+    totalStocks(stocks1).should.be.closeTo(36.01, 0.01);
+    totalStocks(stocks2).should.be.closeTo(.30, 0.01);
+  });
+});
+
 describe('DOM', function () {
   describe('table', function () {
+    before(function () {
+      if (window.__karma__) {
+        $('body').append('<table><thead></thead><tbody></tbody></table>')
+      }
+    });
+
     beforeEach(function () {
       $('tbody').empty();
     });
@@ -38,13 +64,18 @@ describe('DOM', function () {
         $($($trs[1]).find('td')[3]).text().should.equal('23.56');
       });
     });
-
     describe('addStockToTable', function () {
       it('should add a row table', function () {
         var stock = { Name: 'SuperCorp', Symbol: 'SCRP', LastPrice: 12.34 };
         $('tr').length.should.equal(0);
         addStockToTable(stock);
         $('tr').length.should.equal(1);
+      });
+      it('should ignore a not found stock ticker', function () {
+        var stock = { Message: 'No symbol matches found for XXXX.' };
+        $('tr').length.should.equal(0);
+        addStockToTable(stock);
+        $('tr').length.should.equal(0);
       });
       it('should use stock data in the appended row', function () {
         var stock = { Name: 'SuperCorp', Symbol: 'SCRP', LastPrice: 12.34 },
@@ -76,7 +107,6 @@ describe('ASYNC', function () {
       });
     });
   });
-
   describe('getMultipleStocks', function () {
     it('should return mulitple stock objects', function (done) {
       getMultipleStocks(['AAPL', 'MSFT'], function (stocks) {
@@ -88,3 +118,4 @@ describe('ASYNC', function () {
     });
   });
 });
+
