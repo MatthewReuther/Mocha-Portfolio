@@ -8,8 +8,8 @@ module.exports = function(config) {
       base: 'SauceLabs',
       platform: 'Windows 7',
       browserName: 'internet explorer',
-      version: '9.0'
-    },
+      version: '10.0'
+    }
   };
 
   config.set({
