@@ -2,6 +2,34 @@
 // Generated on Fri Feb 06 2015 12:01:05 GMT-0600 (CST)
 
 module.exports = function(config) {
+
+  var sauceLaunchers = {
+    SL_IE7: {
+      base: 'SauceLabs',
+      platform: 'Windows XP',
+      browserName: 'Internet Explorer',
+      version: '7'
+    },
+    SL_IE9: {
+      base: 'SauceLabs',
+      platform: 'Windows XP',
+      browserName: 'Internet Explorer',
+      version: '9'
+    },
+    SL_Opera: {
+      base: 'SauceLabs',
+      platform: 'Windows XP',
+      browserName: 'Opera',
+      version: '12'
+    },
+    SL_Safari: {
+      base: 'SauceLabs',
+      platform: 'Yosemite',
+      browserName: 'Safari',
+      version: '8'
+    }
+  };
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -43,7 +71,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage', 'coveralls'],
+    reporters: ['progress', 'coverage', 'coveralls', 'saucelabs'],
 
 
     // web server port
@@ -62,11 +90,19 @@ module.exports = function(config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
+    customLaunchers: sauceLaunchers,
+
+    sauceLabs: {
+      testName: 'Unit Tests'
+    },
+
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    
+     browsers: ['PhantomJS', 'Firefox', 'SL_IE7', 'SL_IE9', 'SL_Opera', 'SL_Safari'],
+
+
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: true
   });
 };
